@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thawee Koon</title>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Kanit', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to bottom right, #ffe6f0, #fff0f5);
+      height: 100vh;
+    }
+
+    /* ปุ่มหลัก */
+    .main-button-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5em;
+      margin-top: 100px;
+      padding: 20px;
+    }
+
+    .main-button {
+      width: 160px;
+      height: 200px;
+      background-color: white;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      text-align: center;
+      text-decoration: none;
+      color: #333;
+      font-weight: bold;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .main-button:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .main-button img {
+      width: 100%;
+      height: 130px;
+      object-fit: cover;
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+    }
+
+    .main-button span {
+      display: block;
+      padding: 10px;
+      font-size: 1em;
+    }
+
+    /* ปุ่ม “ไปหน้าขอบคุณ” */
+    #nextLevelBtn {
+      margin: 40px auto;
+      padding: 15px 30px;
+      font-size: 1.2em;
+      background-color: #ff69b4;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      display: none;
+      transition: background-color 0.3s ease;
+    }
+
+    #nextLevelBtn:hover {
+      background-color: #ff1493;
+    }
+
+    /* เมนูด้านขวา */
+    .menu-container {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background-color: #ffb6c1;
+      padding: 1em;
+      border-radius: 15px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      width: 220px;
+    }
+
+    .menu-toggle {
+      font-size: 0.95em;
+      font-weight: bold;
+      color: white;
+      cursor: pointer;
+      background: none;
+      border: none;
+      margin-bottom: 0.5em;
+      text-align: left;
+      width: 100%;
+    }
+
+    .menu-content {
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.4s ease;
+    }
+
+    .menu-content.open {
+      max-height: 600px;
+    }
+
+    .menu-item {
+      margin: 0.6em 0;
+      text-align: left;
+    }
+
+    .menu-item button,
+    .menu-item a {
+      width: 100%;
+      display: block;
+      padding: 0.6em;
+      font-size: 0.95em;
+      background-color: #ff69b4;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      text-align: left;
+      text-decoration: none;
+      transition: background-color 0.2s ease;
+    }
+
+    .menu-item button:hover,
+    .menu-item a:hover {
+      background-color: #ff1493;
+    }
+
+    .menu-item a {
+      background-color: #ff85a2;
+    }
+
+    .menu-item a:hover {
+      background-color: #ff3e75;
+    }
+
+    .menu-item a.discord-link {
+      font-size: 0.85em;
+      background: none;
+      color: #b57edc;
+      text-decoration: underline;
+      margin-top: 5px;
+      word-break: break-word;
+    }
+
+    .menu-item a.discord-link:hover {
+      color: #9b4bcc;
+    }
+
+    /* มือถือ: ให้ปุ่มเรียง 2 แถว 2 คอลัมน์ */
+    @media (max-width: 500px) {
+      .main-button {
+        width: 45%;
+        height: auto;
+      }
+
+      .main-button img {
+        max-height: 100px;
+        height: auto;
+      }
+
+      .main-button-container {
+        gap: 1em;
+        margin-top: 80px;
+        padding: 10px;
+      }
+
+      .menu-container {
+        width: 90%;
+        right: 5%;
+        top: 10px;
+      }
+
+      .menu-item button,
+      .menu-item a {
+        font-size: 0.9em;
+        padding: 0.6em;
+      }
+
+      .menu-toggle {
+        font-size: 1em;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="main-button-container">
+    <a href="number000.html" class="main-button" id="page1">
+      <img src="img1.jpg" alt="Page 1" />
+      <span>หน้า 1</span>
+    </a>
+    <a href="number001.html" class="main-button" id="page2">
+      <img src="img2.jpg" alt="Page 2" />
+      <span>หน้า 2</span>
+    </a>
+    <a href="number002.html" class="main-button" id="page3">
+      <img src="img3.jpg" alt="Page 3" />
+      <span>หน้า 3</span>
+    </a>
+    <a href="number003.html" class="main-button" id="page4">
+      <img src="img4.jpg" alt="Page 4" />
+      <span>หน้า 4</span>
+    </a>
+  </div>
+
+  <button id="nextLevelBtn">🎉 ไปยังหน้าขอบคุณ</button>
+
+  <div class="menu-container">
+    <button class="menu-toggle" onclick="toggleMenu()">☰ Options Menu</button>
+    <div id="menuContent" class="menu-content">
+      <div class="menu-item">
+        <a href="LOG1.html">Log out</a>
+      </div>
+      <div class="menu-item">
+        <button onclick="resetGame()">🗑️ รีเซ็ตเกม</button>
+      </div>
+      <div class="menu-item">
+        <a href="https://discord.gg/6x9swQMc" target="_blank" class="discord-link">💬 Discord</a>
+        <a href="https://www.facebook.com/share/1CXAV4sDPx/" target="_blank" class="discord-link">💬 Facebook</a>
+        <a href="https://line.me/ti/p/Eo3cJtIyQf" target="_blank" class="discord-link">💬 Line</a>
+        <a href="https://www.instagram.com/valeria_airr" target="_blank" class="discord-link">💬 IG</a>
+        <a href="https://www.tiktok.com/@valeria_airr" target="_blank" class="discord-link">💬 Tiktok</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const unlockedPage = parseInt(localStorage.getItem("unlockedPage")) || 1;
+      const pages = ["page1", "page2", "page3", "page4"];
+
+      pages.forEach((pageId, index) => {
+        const pageNum = index + 1;
+        const el = document.getElementById(pageId);
+        if (!el) return;
+
+        if (pageNum > unlockedPage) {
+          el.style.pointerEvents = "none";
+          el.style.opacity = "0.5";
+          el.title = "ยังไม่ปลดล็อก";
+        } else {
+          el.style.pointerEvents = "auto";
+          el.style.opacity = "1";
+          el.removeAttribute("title");
+        }
+      });
+
+      const ch1 = parseInt(localStorage.getItem("number000_unlockedLevels")) || 0;
+      const ch2 = parseInt(localStorage.getItem("number001_unlockedLevels")) || 0;
+      const ch3 = parseInt(localStorage.getItem("number002_unlockedLevels")) || 0;
+
+      if (ch1 >= 15 && ch2 >= 15 && ch3 >= 15) {
+        const btn = document.getElementById("nextLevelBtn");
+        btn.style.display = "block";
+        btn.onclick = () => window.location.href = "THU.html";
+
+        if (unlockedPage < 4) {
+          localStorage.setItem("unlockedPage", 4);
+        }
+      }
+    });
+
+    function toggleMenu() {
+      const content = document.getElementById('menuContent');
+      content.classList.toggle('open');
+    }
+
+    function resetGame() {
+      if (confirm("คุณแน่ใจหรือไม่ว่าต้องการรีเซ็ตเกมทั้งหมด?")) {
+        localStorage.clear();
+        location.reload();
+      }
+    }
+  </script>
+
+</body>
+
+</html>

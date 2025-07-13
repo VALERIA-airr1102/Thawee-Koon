@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Thawee Koon</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            font-family: 'Kanit', sans-serif;
+            background-color: #ffc0cb;
+            display: flex;
+            flex-direction: column;
+        }
+
+        body {
+            position: relative;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            padding: 10px 20px;
+            background-color: rgba(255, 192, 203, 0.8);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 20;
+
+        }
+
+        .back-btn {
+            background-color: #ff69b4;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 1em;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        h1 {
+            color: #fff;
+            margin: 0 auto;
+            font-size: 2.4em;
+            text-shadow: 2px 2px 8px #ff1493;
+        }
+
+        .menu-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #ffb6c1;
+            padding: 1em;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            width: 220px;
+            z-index: 30;
+        }
+
+
+        .menu-toggle {
+            font-size: 0.95em;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0;
+            margin-bottom: 0.5em;
+            text-align: left;
+            width: 100%;
+        }
+
+        .menu-content {
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.4s ease;
+        }
+
+        .menu-content.open {
+            max-height: 600px;
+        }
+
+        .menu-item {
+            margin: 0.6em 0;
+            text-align: left;
+        }
+
+        .menu-item a.discord-link {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: block;
+            width: 100%;
+        }
+
+        .menu-item button,
+        .menu-item a {
+            width: 100%;
+            display: block;
+            padding: 0.6em;
+            font-size: 0.95em;
+            background-color: #ff69b4;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: left;
+            text-decoration: none;
+            box-sizing: border-box;
+        }
+
+        .menu-item button:hover,
+        .menu-item a:hover {
+            background-color: #ff1493;
+        }
+
+        .menu-item a.discord-link {
+            font-size: 0.85em;
+            background: none;
+            color: #b57edc;
+            text-decoration: underline;
+            margin-top: 5px;
+            word-break: break-word;
+        }
+
+        .question-box {
+            background: linear-gradient(135deg, #fff, #ffe6f0);
+            width: 90%;
+            max-width: 480px;
+            text-align: center;
+            padding: 24px;
+            font-size: 2.4em;
+            border-radius: 15px;
+            box-shadow: 0 0 30px #ff69b4, 0 0 60px #fff inset;
+            animation: pulse-glow 2s infinite;
+            margin-top: 100px;
+        }
+
+        .answer {
+            font-size: 1.8em;
+            color: white;
+            margin: 10px 0;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 120px);
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .btn,
+        .confirm-btn {
+            padding: 24px;
+            background: linear-gradient(145deg, #ff85c1, #ff69b4);
+            border: none;
+            border-radius: 16px;
+            color: white;
+            font-size: 1.8em;
+            cursor: pointer;
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+            transition: transform 0.1s ease, background-color 0.2s;
+        }
+
+        .btn:active {
+            transform: scale(0.95);
+        }
+
+        .btn:hover {
+            background-color: #ff85c1;
+            animation: pulse 0.6s infinite alternate;
+        }
+
+        .confirm-btn {
+            grid-column: span 3;
+            background-color: #d63384;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            z-index: 100;
+            padding: 1em;
+            text-align: center;
+        }
+
+        .stars {
+            font-size: 3em;
+            color: gold;
+            text-shadow: 2px 2px 8px #000;
+            animation: pop 0.6s ease-out;
+        }
+
+        .message {
+            color: white;
+            font-size: 1.5em;
+            margin: 20px 0;
+        }
+
+        .try-again-btn,
+        .next-button {
+            background-color: #ff69b4;
+            color: white;
+            font-size: 1.2em;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            margin-top: 12px;
+        }
+
+        @keyframes pulse-glow {
+            0% {
+                box-shadow: 0 0 5px #ff69b4;
+            }
+
+            50% {
+                box-shadow: 0 0 20px #ff69b4, 0 0 40px #ff1493;
+            }
+
+            100% {
+                box-shadow: 0 0 5px #ff69b4;
+            }
+        }
+
+        @keyframes pulse {
+            from {
+                transform: scale(1);
+            }
+
+            to {
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes pop {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+
+            60% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="menu-container">
+        <button class="menu-toggle" onclick="toggleMenu()">☰ Options Menu</button>
+        <div id="menuContent" class="menu-content">
+
+            <div class="menu-item">
+                <a href="GS2.html">🎮 Go to Game</a>
+            </div>
+            <div class="menu-item">
+                <a href="https://discord.gg/6x9swQMc" target="_blank" class="discord-link">
+                    💬 Support / Contact (Discord)
+                </a>
+                <a href="https://www.facebook.com/share/1CXAV4sDPx/" target="_blank" class="discord-link">
+                    💬 Support / Contact (Facebook)
+                </a>
+                <a href="https://line.me/ti/p/Eo3cJtIyQf" target="_blank" class="discord-link">
+                    💬 Support / Contact (Line)
+                </a>
+                <a href="https://www.instagram.com/valeria_airr?igsh=cWx1ZjF2bWdzeWMy&utm_source=ig_contact_invite"
+                    target="_blank" class="discord-link">
+                    💬 Support / Contact (IG)
+                </a>
+                <a href="https://www.tiktok.com/@valeria_airr?_t=ZS-8xqnPbA2EoE&_r=1" target="_blank"
+                    class="discord-link">
+                    💬 Support / Contact (Tiktok)
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="top-bar">
+        <button class="back-btn" onclick="goBack()">← Back</button>
+        <h1>Exponent Game</h1>
+        <div style="width: 70px;"></div>
+    </div>
+
+    <div class="overlay" id="overlay">
+        <div class="stars" id="stars">⭐ ⭐ ⭐</div>
+        <div class="message" id="messageText"></div>
+        <button class="try-again-btn" onclick="resetGame()">Try Again</button>
+        <button class="try-again-btn" id="nextLevelBtn" onclick="goToNextLevel()" style="display: none;"></button>
+    </div>
+
+    <div class="question-box" id="question">2 ^ 3 = ?</div>
+    <div class="answer" id="answerDisplay">Answer: </div>
+
+    <div class="buttons">
+        <button class="btn" onclick="addDigit(1)">1</button>
+        <button class="btn" onclick="addDigit(2)">2</button>
+        <button class="btn" onclick="addDigit(3)">3</button>
+        <button class="btn" onclick="addDigit(4)">4</button>
+        <button class="btn" onclick="addDigit(5)">5</button>
+        <button class="btn" onclick="addDigit(6)">6</button>
+        <button class="btn" onclick="addDigit(7)">7</button>
+        <button class="btn" onclick="addDigit(8)">8</button>
+        <button class="btn" onclick="addDigit(9)">9</button>
+        <button class="btn" onclick="clearAnswer()">C</button>
+        <button class="btn" onclick="addDigit(0)">0</button>
+        <button class="btn confirm-btn" onclick="checkAnswer()">Submit</button>
+    </div>
+
+    <script>
+
+        const level = parseInt(new URLSearchParams(window.location.search).get("level")) || 1;
+        const questions = [
+            { base: 2, exp: 1 },
+            { base: 3, exp: 2 },
+            { base: 2, exp: 5 },
+            { base: 4, exp: 2 },
+            { base: 5, exp: 2 },
+            { base: 6, exp: 2 },
+            { base: 2, exp: 6 },
+            { base: 3, exp: 3 },
+            { base: 7, exp: 2 },
+            { base: 2, exp: 8 },
+            { base: 4, exp: 3 },
+            { base: 8, exp: 2 },
+            { base: 5, exp: 3 },
+            { base: 9, exp: 2 },
+            { base: 10, exp: 2 }
+        ];
+
+        const currentQuestion = questions[level - 1];
+        if (!currentQuestion) {
+            alert("ไม่พบด่านนี้");
+            window.location.href = "number000.html";
+        }
+
+        document.getElementById("question").textContent = `${currentQuestion.base} ^ ${currentQuestion.exp} = ?`;
+        const correctAnswer = Math.pow(currentQuestion.base, currentQuestion.exp);
+
+        let userAnswer = "";
+
+        function addDigit(num) {
+            userAnswer += num;
+            document.getElementById("answerDisplay").textContent = "Answer: " + userAnswer;
+        }
+
+        function clearAnswer() {
+            userAnswer = "";
+            document.getElementById("answerDisplay").textContent = "Answer: ";
+        }
+
+        function checkAnswer() {
+            const overlay = document.getElementById("overlay");
+            const stars = document.getElementById("stars");
+            const message = document.getElementById("messageText");
+            const nextLevelBtn = document.getElementById("nextLevelBtn");
+
+            if (parseInt(userAnswer, 10) === correctAnswer) {
+                message.textContent = "Correct! Well done!";
+                stars.style.display = "block";
+                nextLevelBtn.style.display = "inline-block";
+
+                const levelKey = "number000_unlockedLevels";
+                let unlocked = parseInt(localStorage.getItem(levelKey)) || 1;
+                if (level === unlocked && unlocked < 15) {
+                    localStorage.setItem(levelKey, unlocked + 1);
+                }
+
+                if (level === 15) {
+                    
+                    const unlockedPage = parseInt(localStorage.getItem("unlockedPage")) || 1;
+                    if (unlockedPage < 2) {
+                        localStorage.setItem("unlockedPage", 2);
+                    }
+
+                    nextLevelBtn.textContent = "🎉 ไปยังหน้า 2";
+                    nextLevelBtn.onclick = () => window.location.href = "number001.html";
+                } else {
+                    nextLevelBtn.textContent = "Next Level →";
+                    nextLevelBtn.onclick = goToNextLevel;
+                }
+            } else {
+                message.textContent = "Incorrect! Try again.";
+                stars.style.display = "none";
+                nextLevelBtn.style.display = "none";
+            }
+
+            overlay.style.display = "flex";
+        }
+
+        function goToNextLevel() {
+            window.location.href = `GGT_2.html?level=${level + 1}`;
+        }
+
+        function resetGame() {
+            userAnswer = "";
+            document.getElementById("answerDisplay").textContent = "Answer: ";
+            document.getElementById("overlay").style.display = "none";
+            document.getElementById("nextLevelBtn").style.display = "none";
+        }
+
+        function goBack() {
+            window.location.href = "number000.html";
+        }
+
+        function toggleMenu() {
+            document.getElementById('menuContent').classList.toggle('open');
+        }
+
+        document.addEventListener('click', function (event) {
+            const menu = document.getElementById('menuContent');
+            const toggle = document.querySelector('.menu-toggle');
+            if (!menu.contains(event.target) && !toggle.contains(event.target)) {
+                menu.classList.remove('open');
+            }
+        });
+
+        if (!localStorage.getItem("number000_questions")) {
+            localStorage.setItem("number000_questions", JSON.stringify(questions));
+        }
+
+
+        if (!localStorage.getItem("unlockedPage")) {
+            localStorage.setItem("unlockedPage", "1");
+        }
+
+    </script>
+
+
+</body>
+
+</html>

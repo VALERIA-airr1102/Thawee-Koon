@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Thawee Koon</title>
+    <style>
+        
+        .fade-in {
+            opacity: 1;
+        }
+
+        .fade-out {
+            opacity: 0;
+        }
+
+        body {
+            opacity: 0;
+            transition: opacity 0.6s ease;
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 32px 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            background-image: url('https://images.unsplash.com/photo-1501973801540-537f08ccae7e?auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            backdrop-filter: brightness(0.9);
+            min-height: 100vh;
+            box-sizing: border-box;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        @media (max-width: 500px) {
+            body {
+                padding: 24px 12px;
+                justify-content: flex-start;
+            }
+        }
+
+        html {
+            font-size: clamp(16px, 2.5vw, 20px);
+        }
+
+        #rainbowText {
+            font-size: 2.2em;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px #00000044;
+            text-align: center;
+            z-index: 2;
+            position: relative;
+        }
+
+        .rainbow-letter {
+            display: inline-block;
+            animation: rainbow 2s linear infinite;
+        }
+
+        @keyframes rainbow {
+            0% {
+                color: #ff8fcf;
+            }
+
+            16% {
+                color: #ffa5dc;
+            }
+
+            33% {
+                color: #ffc4e3;
+            }
+
+            50% {
+                color: #ffd6ec;
+            }
+
+            66% {
+                color: #ffa9e4;
+            }
+
+            83% {
+                color: #ff94c2;
+            }
+
+            100% {
+                color: #ff8fcf;
+            }
+        }
+
+        .wrapper {
+            background-color: rgba(255, 255, 255, 0.85);
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(255, 182, 193, 0.5);
+            width: 100%;
+            max-width: 400px;
+            box-sizing: border-box;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .wrapper form {
+            text-align: center;
+        }
+
+        .wrapper h1 {
+            color: #ff69b4;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        .input-box {
+            margin-bottom: 15px;
+        }
+
+        .input-box input {
+            width: 100%;
+            padding: 14px;
+            font-size: 1rem;
+            border: 1px solid #ffa5dc;
+            border-radius: 8px;
+            background-color: #fff0f5;
+            box-sizing: border-box;
+        }
+
+        .show-password,
+        .remember-forgot,
+        .register-link {
+            font-size: 1rem;
+            color: #d64ca2;
+            margin-bottom: 12px;
+        }
+
+        .show-password label,
+        .remember-forgot label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .remember-forgot {
+            justify-content: space-between;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .remember-forgot a {
+            text-decoration: none;
+            color: #d64ca2;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            font-size: 1rem;
+            background: linear-gradient(135deg, #ff69b4, #ffb6c1);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(255, 105, 180, 0.4);
+        }
+
+        .btn:hover {
+            background: linear-gradient(135deg, #ff85c1, #ffcce0);
+            transform: scale(1.05);
+        }
+
+        .btn:active {
+            transform: scale(0.97);
+            box-shadow: 0 2px 4px rgba(255, 105, 180, 0.3);
+        }
+
+        .register-link a {
+            text-decoration: none;
+            color: #ff69b4;
+            font-weight: bold;
+        }
+
+        @media (max-width: 500px) {
+            #rainbowText {
+                font-size: 2.4em;
+            }
+
+            .wrapper h1 {
+                font-size: 1.8em;
+            }
+
+            .input-box input,
+            .btn {
+                font-size: 1.1em;
+                padding: 16px;
+            }
+
+            .show-password,
+            .remember-forgot,
+            .register-link {
+                font-size: 1.1em;
+                text-align: center;
+                flex-direction: column;
+                gap: 8px;
+            }
+        }
+
+        .sparkles {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            overflow: hidden;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        .sparkle {
+            position: absolute;
+            background: gold;
+            border-radius: 50%;
+            opacity: 0.7;
+            animation: sparkle-fall 3s linear infinite;
+            filter: drop-shadow(0 0 3px gold);
+        }
+
+        @keyframes sparkle-fall {
+            0% {
+                transform: translateY(-100px) scale(1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(110vh) scale(0.5);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="rainbowText"></div>
+
+    <div class="wrapper">
+        <form action="#">
+            <h1>Login</h1>
+            <div class="input-box">
+                <input type="text" placeholder="Username" required />
+            </div>
+            <div class="input-box">
+                <input type="password" id="pwd" placeholder="Password" required />
+            </div>
+
+            <div class="input-box">
+                <input type="text" id="secretCode" placeholder="Enter Access Code" required />
+            </div>
+
+            <div class="show-password">
+                <label><input type="checkbox"
+                        onclick="document.getElementById('pwd').type = this.checked ? 'text' : 'password'"> Show
+                    Password</label>
+            </div>
+
+            <div class="remember-forgot">
+                <label><input type="checkbox"> Remember me</label>
+            </div>
+
+            <button type="submit" class="btn">Login</button>
+
+            <div class="register-link">
+                <p>Don't have an account? <a href="DON1.html">Register</a></p>
+            </div>
+        </form>
+    </div>
+
+    <div class="sparkles" id="sparkles"></div>
+
+    <script>
+        const text = "Thawee_Koon";
+        const container = document.getElementById("rainbowText");
+        for (let i = 0; i < text.length; i++) {
+            const span = document.createElement("span");
+            span.textContent = text[i];
+            span.className = "rainbow-letter";
+            span.style.animationDelay = `${i * 0.1}s`;
+            container.appendChild(span);
+        }
+
+        window.addEventListener("DOMContentLoaded", () => {
+            document.body.classList.add("fade-in");
+        });
+
+        document.querySelectorAll("a[href]").forEach(link => {
+            link.addEventListener("click", function (e) {
+                const href = this.getAttribute("href");
+
+                if (!href || href.startsWith("http") || href.startsWith("#")) return;
+
+                e.preventDefault();
+                document.body.classList.remove("fade-in");
+                document.body.classList.add("fade-out");
+
+                setTimeout(() => {
+                    window.location.href = href;
+                }, 500);
+            });
+        });
+
+        document.querySelector("form").addEventListener("submit", function (e) {
+            const correctCode = "PW2025_M.5/1";
+            const enteredCode = document.getElementById("secretCode").value.trim();
+            const password = document.getElementById("pwd").value;
+            const username = document.querySelector("input[placeholder='Username']").value;
+
+            if (enteredCode !== correctCode) {
+                e.preventDefault();
+                alert("Access Code ไม่ถูกต้อง! กรุณาลองอีกครั้ง");
+                return;
+            }
+
+            const storedUsername = localStorage.getItem("username");
+            const storedPassword = localStorage.getItem("password");
+
+            if (username !== storedUsername || password !== storedPassword) {
+                e.preventDefault();
+                alert("ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง");
+                return;
+            }
+
+            e.preventDefault();
+            document.body.classList.remove("fade-in");
+            document.body.classList.add("fade-out");
+
+            setTimeout(() => {
+                window.location.href = "GS2.html";
+            }, 500);
+        });
+
+        const sparklesContainer = document.getElementById("sparkles");
+
+        function createSparkle() {
+            const sparkle = document.createElement("div");
+            sparkle.className = "sparkle";
+            sparkle.style.left = Math.random() * 100 + "vw";
+            sparkle.style.animationDuration = (2 + Math.random() * 2) + "s";
+            sparkle.style.backgroundColor = ["#ffd700", "#ff69b4", "#fff", "#b57edc"][Math.floor(Math.random() * 4)];
+            sparkle.style.width = sparkle.style.height = (6 + Math.random() * 8) + "px";
+            sparklesContainer.appendChild(sparkle);
+            setTimeout(() => sparkle.remove(), 4000);
+        }
+
+        setInterval(createSparkle, 150);
+    </script>
+
+</body>
+
+</html>

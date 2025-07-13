@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
+    <title>Thawee Koon</title>
+    <style>
+        .home-button {
+            background-color: #ffc0cb;
+            font-size: 0.95em;
+            text-align: center;
+        }
+
+        .home-button:hover {
+            background-color: #ff8fa3;
+        }
+
+        .reset-button {
+            background-color: #fff0f5;
+            color: #ff1493;
+            font-weight: bold;
+            border: 2px dashed #ff69b4;
+            border-radius: 10px;
+            padding: 0.6em;
+            width: 100%;
+            font-size: 0.95em;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .reset-button:hover {
+            background-color: #ffe4ec;
+            transform: scale(1.05);
+        }
+
+
+        .level:active,
+        .menu-item button:active,
+        .menu-item a:active,
+        .reset-button:active,
+        .home-button:active {
+            transform: scale(0.95);
+            filter: brightness(0.9);
+        }
+
+
+        .fade-out {
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+
+        @media (max-width: 500px) {
+            body {
+                padding: 10px;
+            }
+
+            .level {
+                padding: 16px;
+                font-size: 1em;
+            }
+
+            .reset-button,
+            .home-button {
+                font-size: 0.9em;
+                padding: 0.5em;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .menu-container {
+                width: 90%;
+                right: 5%;
+                top: 10px;
+                padding: 0.8em;
+            }
+
+            .menu-item button,
+            .menu-item a {
+                font-size: 0.9em;
+                padding: 0.6em;
+            }
+
+            .menu-item a.discord-link {
+                font-size: 0.85em;
+                white-space: normal;
+                word-break: break-word;
+                line-height: 1.4;
+                margin-top: 5px;
+            }
+
+            .menu-toggle {
+                font-size: 1em;
+            }
+        }
+
+        body {
+            opacity: 0;
+            animation: fadeIn 0.5s forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes shine {
+            0% {
+                left: -75%;
+            }
+
+            100% {
+                left: 125%;
+            }
+        }
+
+        body {
+            font-family: 'Kanit', sans-serif;
+            background: linear-gradient(to bottom right, #ffe6f0, #fff0f5);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: #ff69b4;
+            margin-bottom: 20px;
+        }
+
+        .level-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 15px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .level {
+            background-color: #ffb6c1;
+            color: white;
+            border: 2px solid #ff69b4;
+            border-radius: 15px;
+            padding: 20px;
+            font-weight: bold;
+            text-align: center;
+            cursor: pointer;
+            font-size: 1.1em;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .level.shiny::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -75%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(120deg,
+                    rgba(255, 255, 255, 0) 0%,
+                    rgba(255, 255, 255, 0.5) 50%,
+                    rgba(255, 255, 255, 0) 100%);
+            transform: skewX(-25deg);
+            animation: shine 2.5s infinite;
+            pointer-events: none;
+            border-radius: 15px;
+        }
+
+        .level.shiny {
+            position: relative;
+            overflow: hidden;
+        }
+
+
+        .level:hover:not(.locked) {
+            background-color: #ff69b4;
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(255, 105, 180, 0.4);
+        }
+
+        .level.locked {
+            background-color: #ffe6f0;
+            color: #aaa;
+            cursor: not-allowed;
+            border: 2px dashed #ffccd9;
+            box-shadow: none;
+        }
+
+        .menu-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #ffb6c1;
+            padding: 1em;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            width: 220px;
+        }
+
+        .menu-toggle {
+            font-size: 0.95em;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0;
+            margin-bottom: 0.5em;
+            text-align: left;
+            width: 100%;
+        }
+
+        .menu-content {
+            overflow: hidden;
+            max-height: 0;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition:
+                max-height 0.3s ease,
+                opacity 0.3s ease,
+                transform 0.3s ease;
+            pointer-events: none;
+        }
+
+        .menu-content.open {
+            max-height: 500px;
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+
+
+        .menu-item {
+            margin: 0.6em 0;
+            text-align: left;
+        }
+
+        .menu-item button,
+        .menu-item a {
+            width: 100%;
+            display: block;
+            padding: 0.6em;
+            font-size: 0.95em;
+            background-color: #ff69b4;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: left;
+            text-decoration: none;
+            transition: background-color 0.2s ease;
+            box-sizing: border-box;
+        }
+
+        .menu-item button:hover,
+        .menu-item a:hover {
+            background-color: #ff1493;
+        }
+
+        .menu-item a {
+            background-color: #ff85a2;
+        }
+
+        .menu-item a:hover {
+            background-color: #ff3e75;
+        }
+
+        .menu-item a.discord-link {
+            display: block;
+            font-size: 0.85em;
+            background: none;
+            color: #b57edc;
+            text-decoration: underline;
+            margin-top: 5px;
+            white-space: normal;
+            word-break: break-word;
+        }
+
+        @media (max-width: 500px) {
+            .menu-container {
+                width: 90%;
+                right: 5%;
+                top: 10px;
+                padding: 0.8em;
+            }
+
+            .menu-item button,
+            .menu-item a {
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Select Level</h1>
+
+
+    <div class="level-grid" id="levelGrid"></div>
+
+    <div class="menu-container">
+        <button class="menu-toggle" onclick="toggleMenu()">☰ Options Menu</button>
+        <div id="menuContent" class="menu-content">
+
+            <div class="menu-item">
+                <a href="#" onclick="navigateWithFade('GS2.html')">🎮 Go to Game</a>
+            </div>
+
+            <div class="menu-item">
+                <button class="reset-button" onclick="resetProgress()">🔁 Reset Progress</button>
+            </div>
+
+            <div class="menu-item">
+                <a href="https://discord.gg/6x9swQMc" target="_blank" class="discord-link">
+                    💬 Support / Contact (Discord)
+                </a>
+                <a href="https://www.facebook.com/share/1CXAV4sDPx/" target="_blank" class="discord-link">
+                    💬 Support / Contact (Facebook)
+                </a>
+                <a href="https://line.me/ti/p/Eo3cJtIyQf" target="_blank" class="discord-link">
+                    💬 Support / Contact (Line)
+                </a>
+                <a href="https://www.instagram.com/valeria_airr?igsh=cWx1ZjF2bWdzeWMy&utm_source=ig_contact_invite"
+                    target="_blank" class="discord-link">
+                    💬 Support / Contact (IG)
+                </a>
+                <a href="https://www.tiktok.com/@valeria_airr?_t=ZS-8xqnPbA2EoE&_r=1" target="_blank"
+                    class="discord-link">
+                    💬 Support / Contact (Tiktok)
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const totalLevels = 15;
+        const key = "number003_unlockedLevels";
+        let unlockedLevels = parseInt(localStorage.getItem(key)) || 1;
+
+        const finishedGame1 = parseInt(localStorage.getItem("number002_unlockedLevels")) >= 15;
+        if (!finishedGame1) {
+            alert("Please finish the first game before unlocking this one!");
+            window.location.href = "number002.html";
+        }
+
+        const levelGrid = document.getElementById('levelGrid');
+
+        renderLevels();
+
+        function toggleMenu() {
+            const content = document.getElementById('menuContent');
+            content.classList.toggle('open');
+        }
+
+        function resetProgress() {
+            if (confirm("Are you sure you want to reset all progress?")) {
+                localStorage.removeItem(key);
+                location.reload();
+            }
+        }
+
+        function goToLevel(i) {
+            document.body.classList.add('fade-out');
+            setTimeout(() => {
+                window.location.href = `GT_2222.html?level=${i}`;
+            }, 400);
+        }
+
+        function renderLevels() {
+            levelGrid.innerHTML = '';
+            for (let i = 1; i <= totalLevels; i++) {
+                const btn = document.createElement('button');
+                btn.classList.add('level');
+                btn.textContent = i;
+
+                if (i > unlockedLevels) {
+                    btn.classList.add('locked');
+                    btn.onclick = () => {
+                        alert(`Level ${i} is locked. Please complete Level ${i - 1} first.`);
+                    };
+                } else {
+                    btn.classList.add('shiny');
+                    btn.onclick = () => goToLevel(i);
+                }
+
+                levelGrid.appendChild(btn);
+            }
+        }
+
+        function navigateWithFade(url) {
+            document.body.classList.add('fade-out');
+            setTimeout(() => {
+                window.location.href = url;
+            }, 400);
+        }
+
+        if (!localStorage.getItem("unlockedPage")) {
+            localStorage.setItem("unlockedPage", 4);
+        }
+
+        function unlockNextChapter() {
+            let currentPage = 4;
+            let unlockedPage = parseInt(localStorage.getItem("unlockedPage")) || 1;
+            if (currentPage >= unlockedPage && unlockedPage < 4) {
+                localStorage.setItem("unlockedPage", unlockedPage + 1);
+            }
+        }
+
+        function onFinalLevelPassed() {
+            unlockNextChapter();
+            window.location.href = "GS2.html";
+        }
+
+    </script>
+
+</body>
+
+</html>
