@@ -6,8 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Thawee Koon</title>
     <style>
+        
         .fade-in {
             opacity: 1;
+        }
+
+        .fade-out {
+            opacity: 0;
         }
 
         body {
@@ -28,12 +33,14 @@
             min-height: 100vh;
             box-sizing: border-box;
             position: relative;
-            /* จำเป็นสำหรับตำแหน่ง sparkles */
             overflow-x: hidden;
         }
 
-        .fade-out {
-            opacity: 0;
+        @media (max-width: 500px) {
+            body {
+                padding: 24px 12px;
+                justify-content: flex-start;
+            }
         }
 
         html {
@@ -45,8 +52,8 @@
             margin-bottom: 20px;
             text-shadow: 1px 1px 2px #00000044;
             text-align: center;
-            position: relative;
             z-index: 2;
+            position: relative;
         }
 
         .rainbow-letter {
@@ -92,15 +99,20 @@
             width: 100%;
             max-width: 400px;
             box-sizing: border-box;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
             position: relative;
             z-index: 2;
+        }
+
+        .wrapper form {
+            text-align: center;
         }
 
         .wrapper h1 {
             color: #ff69b4;
             margin-bottom: 20px;
             font-size: 2em;
-            text-align: center;
         }
 
         .input-box {
@@ -117,6 +129,32 @@
             box-sizing: border-box;
         }
 
+        .show-password,
+        .remember-forgot,
+        .register-link {
+            font-size: 1rem;
+            color: #d64ca2;
+            margin-bottom: 12px;
+        }
+
+        .show-password label,
+        .remember-forgot label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .remember-forgot {
+            justify-content: space-between;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .remember-forgot a {
+            text-decoration: none;
+            color: #d64ca2;
+        }
+
         .btn {
             width: 100%;
             padding: 14px;
@@ -129,7 +167,6 @@
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 4px 6px rgba(255, 105, 180, 0.4);
-            margin-top: 10px;
         }
 
         .btn:hover {
@@ -142,26 +179,13 @@
             box-shadow: 0 2px 4px rgba(255, 105, 180, 0.3);
         }
 
-        .login-link {
-            text-align: center;
-            margin-top: 16px;
-            font-size: 0.95rem;
-            position: relative;
-            z-index: 2;
-        }
-
-        .login-link a {
+        .register-link a {
+            text-decoration: none;
             color: #ff69b4;
             font-weight: bold;
-            text-decoration: none;
         }
 
         @media (max-width: 500px) {
-            body {
-                padding: 24px 12px;
-                justify-content: flex-start;
-            }
-
             #rainbowText {
                 font-size: 2.4em;
             }
@@ -175,9 +199,17 @@
                 font-size: 1.1em;
                 padding: 16px;
             }
+
+            .show-password,
+            .remember-forgot,
+            .register-link {
+                font-size: 1.1em;
+                text-align: center;
+                flex-direction: column;
+                gap: 8px;
+            }
         }
 
-        /* --- Sparkles styles --- */
         .sparkles {
             position: fixed;
             width: 100vw;
@@ -217,17 +249,15 @@
     <div id="rainbowText"></div>
 
     <div class="wrapper">
-        <h1>Create Account</h1>
         <form action="#">
+            <h1>Login</h1>
             <div class="input-box">
                 <input type="text" placeholder="Username" required />
             </div>
             <div class="input-box">
                 <input type="password" id="pwd" placeholder="Password" required />
             </div>
-            <div class="input-box">
-                <input type="password" id="aac" placeholder="Confirm Password" required />
-            </div>
+
             <div class="input-box">
                 <input type="text" id="secretCode" placeholder="Enter Access Code" required />
             </div>
@@ -237,22 +267,32 @@
                         onclick="document.getElementById('pwd').type = this.checked ? 'text' : 'password'"> Show
                     Password</label>
             </div>
-            <div class="show-password">
-                <label><input type="checkbox"
-                        onclick="document.getElementById('aac').type = this.checked ? 'text' : 'password'"> Confirm
-                    Password</label>
+
+            <div class="remember-forgot">
+                <label><input type="checkbox"> Remember me</label>
             </div>
 
-            <button type="submit" class="btn">Register</button>
+            <button type="submit" class="btn">Login</button>
+
+            <div class="register-link">
+                <p>Don't have an account? <a href="DON1.html">Register</a></p>
+            </div>
         </form>
-        <div class="login-link">
-            <p>Already have an account? <a href="index.html">Login</a></p>
-        </div>
     </div>
 
     <div class="sparkles" id="sparkles"></div>
 
     <script>
+        const text = "Thawee_Koon";
+        const container = document.getElementById("rainbowText");
+        for (let i = 0; i < text.length; i++) {
+            const span = document.createElement("span");
+            span.textContent = text[i];
+            span.className = "rainbow-letter";
+            span.style.animationDelay = `${i * 0.1}s`;
+            container.appendChild(span);
+        }
+
         window.addEventListener("DOMContentLoaded", () => {
             document.body.classList.add("fade-in");
         });
@@ -273,27 +313,11 @@
             });
         });
 
-        const text = "Join_the_Thawee_Koon✨";
-        const container = document.getElementById("rainbowText");
-        for (let i = 0; i < text.length; i++) {
-            const span = document.createElement("span");
-            span.textContent = text[i];
-            span.className = "rainbow-letter";
-            span.style.animationDelay = `${i * 0.1}s`;
-            container.appendChild(span);
-        }
-
         document.querySelector("form").addEventListener("submit", function (e) {
             const correctCode = "PW2025_M.5/1";
             const enteredCode = document.getElementById("secretCode").value.trim();
             const password = document.getElementById("pwd").value;
-            const confirmPassword = document.getElementById("aac").value;
-
-            if (password !== confirmPassword) {
-                e.preventDefault();
-                alert("รหัสผ่านไม่ตรงกัน! กรุณาตรวจสอบอีกครั้ง");
-                return;
-            }
+            const username = document.querySelector("input[placeholder='Username']").value;
 
             if (enteredCode !== correctCode) {
                 e.preventDefault();
@@ -301,20 +325,24 @@
                 return;
             }
 
-            e.preventDefault();
+            const storedUsername = localStorage.getItem("username");
+            const storedPassword = localStorage.getItem("password");
 
+            if (username !== storedUsername || password !== storedPassword) {
+                e.preventDefault();
+                alert("ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง");
+                return;
+            }
+
+            e.preventDefault();
             document.body.classList.remove("fade-in");
             document.body.classList.add("fade-out");
 
             setTimeout(() => {
-                localStorage.setItem("username", document.querySelector("input[placeholder='Username']").value);
-                localStorage.setItem("password", password);
-
                 window.location.href = "GS2.html";
             }, 500);
         });
 
-        // Sparkles effect
         const sparklesContainer = document.getElementById("sparkles");
 
         function createSparkle() {
