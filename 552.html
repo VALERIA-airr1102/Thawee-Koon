@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Thawee Koon</title>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <style>
+        body {
+            font-family: 'Kanit', sans-serif;
+            text-align: center;
+            background: linear-gradient(to bottom, #ffe4f0, #ffc0cb);
+            color: #d63384;
+            margin: 0;
+            padding: 30px;
+        }
+
+        input {
+            margin: 10px;
+            padding: 10px 14px;
+            border: 2px solid #ff69b4;
+            border-radius: 12px;
+            outline: none;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #ff69b4;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 4px #d94f9f;
+            transition: all 0.2s ease-in-out;
+        }
+
+        button:hover {
+            background-color: #ff85c1;
+            transform: scale(1.05);
+        }
+
+        button:active {
+            transform: scale(0.97);
+            box-shadow: 0 2px #d94f9f;
+        }
+
+        .leaderboard {
+            margin-top: 20px;
+            display: inline-block;
+            background: #fff0f5;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(255, 105, 180, 0.3);
+            max-height: 400px;
+            width: 400px;
+            overflow-y: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th,
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #ffc0cb;
+        }
+
+        th {
+            background-color: #ff69b4;
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+        /* ไฮไลต์ 5 อันดับแรก */
+        tbody tr:nth-child(-n+5) {
+            background-color: #ffd1dc;
+            font-weight: bold;
+            border-left: 4px solid #ff1493;
+        }
+
+        #myRankResult {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #c2185b;
+            background-color: #fff5f7;
+            padding: 10px 16px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 0 0 8px rgba(255, 182, 193, 0.5);
+            min-width: 300px;
+        }
+
+        h1,
+        h3 {
+            color: #c2185b;
+        }
+
+        #homeButton {
+            margin-top: 20px;
+            background-color: #ffb6c1;
+            color: #880e4f;
+            border-radius: 16px;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            border: 2px solid #f06292;
+            box-shadow: 0 4px #ec407a;
+            transition: all 0.2s ease-in-out;
+        }
+
+        #homeButton:hover {
+            background-color: #f48fb1;
+            transform: scale(1.05);
+        }
+
+        #homeButton:active {
+            transform: scale(0.97);
+            box-shadow: 0 2px #ec407a;
+        }
+        
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <h1>💖 อันดับคะแนนThawee Koon</h1>
+
+    <input id="searchName" placeholder="พิมพ์ชื่อของคุณเพื่อดูอันดับ">
+    <button onclick="searchMyRank()">ค้นหาอันดับของคุณ</button>
+
+    <h3>🏆 จัดอันดับทั้งหมด:</h3>
+    <div class="leaderboard" id="leaderboard">
+        <table>
+            <thead>
+                <tr>
+                    <th>อันดับ</th>
+                    <th>ชื่อ</th>
+                    <th>คะแนน</th>
+                </tr>
+            </thead>
+            <tbody id="leaderboard-body">
+                <!-- รายชื่อจะขึ้นตรงนี้ -->
+            </tbody>
+        </table>
+    </div>
+
+    <h3 id="myRankResult"></h3>
+    <br>
+    <button onclick="goHome()" id="homeButton">🏠 กลับหน้าแรก</button>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT.firebaseapp.com",
+            databaseURL: "https://YOUR_PROJECT.firebaseio.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT.appspot.com",
+            messagingSenderId: "SENDER_ID",
+            appId: "APP_ID"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        let currentLeaderboard = [];
+
+        function loadLeaderboard() {
+            const tbody = document.getElementById("leaderboard-body");
+            db.ref("players").on("value", snapshot => {
+                const scores = [];
+                snapshot.forEach(child => {
+                    scores.push({ name: child.key, score: child.val().score || 0 });
+                });
+
+                scores.sort((a, b) => b.score - a.score);
+                currentLeaderboard = scores;
+
+                if (scores.length === 0) {
+                    // แสดงอันดับ 1-5 เปล่าๆ ถ้าไม่มีข้อมูล
+                    let emptyRows = "";
+                    for (let i = 1; i <= 5; i++) {
+                        emptyRows += `<tr style="color:#999;"><td>${i}</td><td>---</td><td>0</td></tr>`;
+                    }
+                    tbody.innerHTML = emptyRows;
+                } else {
+                    tbody.innerHTML = scores.map((p, i) =>
+                        `<tr>
+                            <td>${i + 1}</td>
+                            <td>${p.name}</td>
+                            <td>${p.score}</td>
+                        </tr>`
+                    ).join("");
+                }
+            });
+        }
+
+        function searchMyRank() {
+            const name = document.getElementById("searchName").value.trim();
+            const result = document.getElementById("myRankResult");
+
+            if (!name) {
+                result.textContent = "⚠️ กรุณาใส่ชื่อก่อนค้นหา";
+                return;
+            }
+
+            const index = currentLeaderboard.findIndex(p => p.name.toLowerCase() === name.toLowerCase());
+            if (index === -1) {
+                result.textContent = `❌ ไม่พบชื่อ "${name}" ในระบบ`;
+            } else {
+                result.textContent = `✅ ${name} อยู่อันดับที่ ${index + 1} จาก ${currentLeaderboard.length} คน`;
+            }
+        }
+
+        loadLeaderboard();
+
+        function goHome() {
+            window.location.href = "home1.html"; // เปลี่ยนเป็นชื่อไฟล์หน้าหลักของคุณ
+        }
+
+    </script>
+</body>
+
+</html>

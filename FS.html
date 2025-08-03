@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thawee Koon</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Kanit', sans-serif;
+            background: linear-gradient(135deg, #ffccff, #ccffff);
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+            animation: fadeIn 1s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #cc0066;
+            text-shadow: 1px 1px 2px white;
+            margin-bottom: 10px;
+        }
+
+        .question-box {
+            font-size: 2em;
+            margin: 30px 0;
+            color: #333;
+        }
+
+        .answer {
+            font-size: 1.5em;
+            margin: 10px 0;
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 80px);
+            grid-gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        button {
+            font-size: 1.5em;
+            padding: 10px;
+            border-radius: 10px;
+            border: none;
+            background: linear-gradient(145deg, #ff99cc, #ff66aa);
+            color: white;
+            cursor: pointer;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+            transition: transform 0.1s, background 0.3s;
+        }
+
+        button:hover {
+            background: linear-gradient(145deg, #ff66aa, #ff3388);
+            transform: scale(1.05);
+        }
+
+        #countdown {
+            font-size: 2.5em;
+            color: #ff3399;
+            margin-top: 80px;
+            animation: pulse 1s infinite alternate;
+        }
+
+        @keyframes pulse {
+            from {
+                transform: scale(1);
+            }
+
+            to {
+                transform: scale(1.1);
+            }
+        }
+
+        #gameOverScreen {
+            display: none;
+            margin-top: 40px;
+            animation: fadeIn 1s ease-in;
+        }
+
+        #gameOverScreen h2 {
+            font-size: 2em;
+            color: #99004d;
+        }
+
+        #gameOverScreen p {
+            font-size: 1.5em;
+        }
+
+        @media (max-width: 600px) {
+            .button-grid {
+                grid-template-columns: repeat(3, 60px);
+                grid-gap: 8px;
+            }
+
+            button {
+                font-size: 1.2em;
+                padding: 8px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .question-box {
+                font-size: 1.5em;
+            }
+
+            .answer {
+                font-size: 1.2em;
+            }
+
+            #countdown {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Thawee Koon Fast ✨</h1>
+
+    <div id="countdown">เริ่มใน 5</div>
+
+    <div class="question-box" id="question" style="display: none;">รอเริ่ม...</div>
+    <div class="answer" id="answerDisplay">Answer: </div>
+
+    <div>คะแนน: <span id="score">0</span></div>
+    <div>เวลาที่เหลือ: <span id="timeLeft">--</span> วินาที</div>
+
+    <div class="button-grid">
+        <button onclick="addDigit('1')">1</button>
+        <button onclick="addDigit('2')">2</button>
+        <button onclick="addDigit('3')">3</button>
+        <button onclick="addDigit('4')">4</button>
+        <button onclick="addDigit('5')">5</button>
+        <button onclick="addDigit('6')">6</button>
+        <button onclick="addDigit('7')">7</button>
+        <button onclick="addDigit('8')">8</button>
+        <button onclick="addDigit('9')">9</button>
+        <button onclick="clearAnswer()">C</button>
+        <button onclick="addDigit('0')">0</button>
+        <button onclick="checkAnswer()">OK</button>
+    </div>
+
+    <div id="gameOverScreen">
+        <h2>จบเกมแล้ว!</h2>
+        <p>คะแนนสุดท้ายของคุณคือ: <span id="finalScore"></span></p>
+        <button onclick="goHome()" style="background: linear-gradient(to right, #66ccff, #3399ff);">ออก</button>
+    </div>
+
+    <script>
+        const questions = [
+            { base: 2, exp: 1 }, { base: 3, exp: 2 }, { base: 2, exp: 5 }, { base: 4, exp: 2 },
+            { base: 5, exp: 2 }, { base: 6, exp: 2 }, { base: 2, exp: 6 }, { base: 3, exp: 3 },
+            { base: 7, exp: 2 }, { base: 2, exp: 8 }, { base: 4, exp: 3 }, { base: 8, exp: 2 },
+            { base: 5, exp: 3 }, { base: 9, exp: 2 }, { base: 10, exp: 2 }
+        ];
+
+        let userAnswer = "";
+        let correctAnswer = 0;
+        let score = 0;
+        let timeLeft = 20;
+        let timerInterval;
+
+        function startCountdown() {
+            let countdown = 5;
+            const countdownEl = document.getElementById("countdown");
+            countdownEl.textContent = `เริ่มใน ${countdown}`;
+            const interval = setInterval(() => {
+                countdown--;
+                countdownEl.textContent = `เริ่มใน ${countdown}`;
+                if (countdown <= 0) {
+                    clearInterval(interval);
+                    countdownEl.style.display = "none";
+                    startGame();
+                }
+            }, 1000);
+        }
+
+        function startGame() {
+            document.getElementById("question").style.display = "block";
+            loadNewQuestion();
+        }
+
+        function loadNewQuestion() {
+            const q = questions[Math.floor(Math.random() * questions.length)];
+            correctAnswer = Math.pow(q.base, q.exp);
+            userAnswer = "";
+            document.getElementById("question").textContent = `${q.base} ^ ${q.exp} = ?`;
+            document.getElementById("answerDisplay").textContent = "Answer: ";
+            timeLeft = 20;
+            document.getElementById("timeLeft").textContent = timeLeft;
+
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                document.getElementById("timeLeft").textContent = timeLeft;
+                if (timeLeft <= 0) {
+                    endGame();
+                }
+            }, 1000);
+        }
+
+        function addDigit(num) {
+            userAnswer += num;
+            document.getElementById("answerDisplay").textContent = "Answer: " + userAnswer;
+        }
+
+        function clearAnswer() {
+            userAnswer = "";
+            document.getElementById("answerDisplay").textContent = "Answer: ";
+        }
+
+        function checkAnswer() {
+            if (parseInt(userAnswer) === correctAnswer) {
+                score += 50;
+                document.getElementById("score").textContent = score;
+                loadNewQuestion();
+            } else {
+                endGame();
+            }
+        }
+
+        function endGame() {
+            clearInterval(timerInterval);
+            localStorage.setItem("currentScore", score);
+            document.getElementById("question").style.display = "none";
+            document.querySelector(".button-grid").style.display = "none";
+            document.getElementById("answerDisplay").style.display = "none";
+            document.getElementById("timeLeft").textContent = "--";
+            document.getElementById("finalScore").textContent = score;
+            document.getElementById("gameOverScreen").style.display = "block";
+        }
+
+        function goHome() {
+            window.location.href = "home1.html";
+        }
+
+        window.onload = startCountdown;
+    </script>
+
+</body>
+
+</html>

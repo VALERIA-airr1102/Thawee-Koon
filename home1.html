@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Thawee Koon</title>
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/3468/3468379.png" />
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@500;700&display=swap" rel="stylesheet" />
+    <style>
+        :root {
+            --primary: #ff69b4;
+            --secondary: #d63384;
+            --bg: #ffe3f6;
+            --text: #cc1279;
+            --glass-bg: rgba(255, 255, 255, 0.65);
+        }
+
+        body.dark-mode {
+            --bg: #1b1b2f;
+            --glass-bg: rgba(40, 40, 60, 0.6);
+            --text: #ff9ed3;
+        }
+
+        * {
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Kanit', sans-serif;
+            min-height: 100vh;
+            background: var(--bg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            transition: background 0.5s ease;
+        }
+
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+        }
+
+        .card-glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(24px) saturate(140%);
+            border-radius: 38px;
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
+            padding: 44px 36px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            animation: fadeIn 0.9s ease-out;
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-img {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid white;
+            box-shadow: 0 4px 18px rgba(255, 0, 102, 0.2);
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-size: 44px;
+            color: var(--text);
+            margin: 12px 0 6px;
+        }
+
+        h2 {
+            color: var(--text);
+            margin-bottom: 0;
+        }
+
+        p.tagline {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .menu {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .menu a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 14px 0;
+            border-radius: 60px;
+            font-size: 18px;
+            font-weight: 600;
+            color: white;
+            text-decoration: none;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            animation: slideUp 0.5s ease forwards;
+        }
+
+        .menu a::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, #ffffff33 0%, transparent 80%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .menu a:hover::after {
+            opacity: 0.4;
+        }
+
+        .menu a:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .footer {
+            margin-top: 30px;
+            font-size: 13px;
+            color: #999;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.3);
+            border: none;
+            border-radius: 100px;
+            padding: 8px 14px;
+            font-size: 16px;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: 0.3s;
+            z-index: 2;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 30px;
+            }
+
+            .menu a {
+                font-size: 16px;
+                padding: 12px 0;
+            }
+
+            .profile-img {
+                width: 70px;
+                height: 70px;
+            }
+        }
+
+        .menu a {
+            /* เดิมมีอยู่แล้ว เพิ่มเติมด้านล่างนี้ */
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -75%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(120deg,
+                    rgba(255, 255, 255, 0.3) 0%,
+                    rgba(255, 255, 255, 0.5) 50%,
+                    rgba(255, 255, 255, 0.3) 100%);
+            transform: skewX(-20deg);
+            transition: left 0.5s;
+            pointer-events: none;
+        }
+
+        .menu a:hover::before {
+            left: 130%;
+        }
+
+        .menu a:active {
+            transform: scale(0.95);
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="particles-js"></div>
+    <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+
+    <h2>คะแนนล่าสุด:</h2>
+    <script>
+        const lastScore = localStorage.getItem("currentScore");
+        if (lastScore !== null) {
+            document.write(`<p style="font-size: 2em; margin-top: 0;">${lastScore} คะแนน</p>`);
+        }
+    </script>
+
+    <div class="card-glass">
+        <img src="https://cdn-icons-png.flaticon.com/512/3468/3468379.png" class="profile-img" />
+        <h1>Thawee Koon</h1>
+        <nav class="menu">
+            <a href="GS2.html">Single Player</a>
+            <a href="FS.html">Fast⏩</a>
+            <a href="in.html">Collect Points</a>
+            <a href="552.html">Player Ranking🥇🥈🥉</a>
+            <a href="CA.html">Creator Credit💻</a>
+            <a href="index.html">Log Out</a>
+        </nav>
+        <div class="footer">© 2025 Thawee Koon. All rights reserved.</div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle("dark-mode");
+        }
+
+        particlesJS("particles-js", {
+            particles: {
+                number: { value: 40 },
+                color: { value: "#ff88dd" },
+                shape: { type: "circle" },
+                opacity: { value: 0.4 },
+                size: { value: 4 },
+                line_linked: { enable: true, distance: 150, color: "#ffb3e6", opacity: 0.3, width: 1 },
+                move: { enable: true, speed: 2 }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: { enable: true, mode: "repulse" },
+                    onclick: { enable: true, mode: "push" }
+                },
+                modes: {
+                    repulse: { distance: 100 },
+                    push: { particles_nb: 4 }
+                }
+            },
+            retina_detect: true
+        });
+    </script>
+</body>
+
+</html>

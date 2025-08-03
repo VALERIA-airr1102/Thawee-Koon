@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thawee koon</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            background: radial-gradient(ellipse at center, #ffe0f0, #ffb6c1);
+            font-family: 'Kanit', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.6);
+            padding: 40px 30px;
+            border-radius: 20px;
+            max-width: 800px;
+            width: 100%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            animation: fadeIn 1s ease-out;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #ff1493;
+            text-shadow: 2px 2px 10px #fff;
+        }
+
+        p {
+            font-size: 1.2em;
+            color: #333;
+            margin: 10px 0;
+        }
+
+        h2 {
+            color: #d63384;
+            margin-top: 30px;
+        }
+
+        .support-links {
+            margin-top: 20px;
+        }
+
+        .support-links a {
+            display: inline-block;
+            margin: 6px;
+            padding: 10px 18px;
+            font-size: 1em;
+            color: white;
+            background-color: #ff69b4;
+            text-decoration: none;
+            border-radius: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .support-links a:hover {
+            background-color: #ff1493;
+        }
+
+        .btn {
+            margin-top: 30px;
+            background: linear-gradient(135deg, #ff69b4, #ff1493);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-size: 1.2em;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2), 0 0 10px #ff69b4;
+            animation: pulse 2s infinite;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: linear-gradient(135deg, #ff1493, #ff69b4);
+            transform: scale(1.05);
+            box-shadow: 0 0 25px #ff1493, 0 0 50px #ff69b4;
+        }
+
+        .sparkles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        .sparkle {
+            position: absolute;
+            background: gold;
+            border-radius: 50%;
+            opacity: 0.7;
+            animation: sparkle-fall 3s linear infinite;
+        }
+
+        @keyframes sparkle-fall {
+            0% {
+                transform: translateY(-100px) scale(1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(110vh) scale(0.5);
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 10px #ff69b4;
+            }
+
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 0 20px #ff1493;
+            }
+
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 10px #ff69b4;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .btn {
+                font-size: 1em;
+                padding: 12px 24px;
+            }
+
+            .container {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="sparkles" id="sparkles"></div>
+
+    <div class="container">
+        <h1>🎉 จากผู้สร้าง Thawee Koon</h1>
+        <p>สวัสดีค่ะ ฉัน Valeria ดีใจที่ทุกคนเข้ามาเยี่ยมชมเว็บไซด์ของเรานะคะหวังว่าผู้เล่นทุกคนจะสนุก<br>
+            อย่าลืมแชร์ให้เพื่อนๆ มาลองเล่นด้วยนะคะ 💕</p>
+
+        <h2>เกมนี้ถูกสร้างขึ้นเพื่อเป็นชิ้นงานนำเสนอ คุณครูนภาพร จันทวี</h2>
+
+        <h2>🌟 ทีมผู้สร้างจาก M.5/1</h2>
+        <p>นางสาว สุวรรณนภา ชัยแสวง No.29</p>
+        <p>นางสาว ปาลิตา หมื่นพิลมทอง No.12</p>
+        <p>นางสาว พุทธิตา ศรีจันทร์ No.17</p>
+        <p>นาย สายหมอก สร้อยสาวะ No.3</p>
+
+        <p>และขอบคุณเพื่อนอีกคนนึงที่ช่วยเหลือในงานครั้งนี้</p>
+
+        <h2>📣 ช่องทางสนับสนุน ของValeria</h2>
+        <div class="support-links">
+            <a href="https://www.facebook.com/share/1CXAV4sDPx/" target="_blank">Facebook</a>
+            <a href="https://line.me/ti/p/Eo3cJtIyQf" target="_blank">Line</a>
+            <a href="https://www.instagram.com/valeria_airr" target="_blank">Instagram</a>
+            <a href="https://www.tiktok.com/@valeria_airr" target="_blank">Tiktok</a>
+        </div>
+
+        <button class="btn" onclick="location.href='home1.html'">🔙 กลับหน้าHome</button>
+    </div>
+
+    <script>
+        const sparklesContainer = document.getElementById("sparkles");
+
+        function createSparkle() {
+            const sparkle = document.createElement("div");
+            sparkle.className = "sparkle";
+            sparkle.style.left = Math.random() * 100 + "vw";
+            sparkle.style.animationDuration = (2 + Math.random() * 2) + "s";
+            sparkle.style.backgroundColor = ["#ffd700", "#ff69b4", "#fff", "#b57edc"][Math.floor(Math.random() * 4)];
+            sparkle.style.width = sparkle.style.height = (6 + Math.random() * 8) + "px";
+            sparklesContainer.appendChild(sparkle);
+            setTimeout(() => sparkle.remove(), 4000);
+        }
+
+        setInterval(createSparkle, 150);
+
+    </script>
+</body>
+
+</html>
