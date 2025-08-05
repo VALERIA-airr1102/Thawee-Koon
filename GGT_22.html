@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thawee Koon</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
     <style>
@@ -15,7 +15,7 @@
         body {
             margin: 0;
             padding: 0;
-            width: 100vw;
+            width: 100%;
             height: 100vh;
             font-family: 'Kanit', sans-serif;
             background-color: #ffc0cb;
@@ -274,42 +274,56 @@
                 transform: scale(1);
             }
         }
+
+        @media screen and (max-width: 480px) {
+            .question-box {
+                font-size: 1.5em;
+                padding: 16px;
+            }
+
+            .answer {
+                font-size: 1.2em;
+            }
+
+            .buttons {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px;
+            }
+
+            .btn,
+            .confirm-btn {
+                padding: 16px;
+                font-size: 1.2em;
+            }
+
+            .menu-container {
+                width: 90%;
+                right: 5%;
+                top: 70px;
+            }
+
+            .menu-toggle {
+                font-size: 1em;
+            }
+
+            .top-bar h1 {
+                font-size: 1.4em;
+            }
+
+            .try-again-btn,
+            .next-button {
+                font-size: 1em;
+                padding: 10px 20px;
+            }
+        }
     </style>
 </head>
 
 <body>
-    <div class="menu-container">
-        <button class="menu-toggle" onclick="toggleMenu()">☰ Options Menu</button>
-        <div id="menuContent" class="menu-content">
-
-            <div class="menu-item">
-                <a href="GS2.html">🎮 Go to Game</a>
-            </div>
-            <div class="menu-item">
-                <a href="https://discord.gg/6x9swQMc" target="_blank" class="discord-link">
-                    💬 Support / Contact (Discord)
-                </a>
-                <a href="https://www.facebook.com/share/1CXAV4sDPx/" target="_blank" class="discord-link">
-                    💬 Support / Contact (Facebook)
-                </a>
-                <a href="https://line.me/ti/p/Eo3cJtIyQf" target="_blank" class="discord-link">
-                    💬 Support / Contact (Line)
-                </a>
-                <a href="https://www.instagram.com/valeria_airr?igsh=cWx1ZjF2bWdzeWMy&utm_source=ig_contact_invite"
-                    target="_blank" class="discord-link">
-                    💬 Support / Contact (IG)
-                </a>
-                <a href="https://www.tiktok.com/@valeria_airr?_t=ZS-8xqnPbA2EoE&_r=1" target="_blank"
-                    class="discord-link">
-                    💬 Support / Contact (Tiktok)
-                </a>
-            </div>
-        </div>
-    </div>
 
     <div class="top-bar">
         <button class="back-btn" onclick="goBack()">← Back</button>
-        <h1>Exponent Game</h1>
+        <h1>Thawee koon</h1>
         <div style="width: 70px;"></div>
     </div>
 
@@ -340,11 +354,29 @@
     </div>
 
     <script>
-        const level = parseInt(new URLSearchParams(window.location.search).get("level")) || 1;
-        const levelKey = "number001_unlockedLevels"; // ใช้เก็บ progress ของ chapter 2
-        const prevKey = "number000_unlockedLevels"; // ใช้เช็กว่า chapter 1 ผ่านหรือยัง
 
-        // ❗ ป้องกันข้าม chapter ถ้ายังไม่ผ่านหน้าแรก
+        const level = parseInt(new URLSearchParams(window.location.search).get("level")) || 1;
+        const questions = [
+            { base: 2, exp: 1 },   // 2^1 = 2
+            { base: 3, exp: 2 },   // 3^2 = 9
+            { base: 2, exp: 5 },   // 2^5 = 32
+            { base: 4, exp: 2 },   // 4^2 = 16
+            { base: 5, exp: 2 },   // 5^2 = 25
+            { base: 6, exp: 2 },   // 6^2 = 36
+            { base: 2, exp: 6 },   // 2^6 = 64
+            { base: 3, exp: 3 },   // 3^3 = 27
+            { base: 7, exp: 2 },   // 7^2 = 49
+            { base: 2, exp: 8 },   // 2^8 = 256
+            { base: 4, exp: 3 },   // 4^3 = 64
+            { base: 8, exp: 2 },   // 8^2 = 64
+            { base: 5, exp: 3 },   // 5^3 = 125
+            { base: 9, exp: 2 },   // 9^2 = 81
+            { base: 10, exp: 2 }   // 10^2 = 100
+        ];
+
+        const levelKey = "number001_unlockedLevels";
+        const prevKey = "number000_unlockedLevels";
+
         if ((parseInt(localStorage.getItem(prevKey)) || 0) < 15) {
             alert("กรุณาผ่านทุกด่านของหน้าแรกก่อน");
             window.location.href = "number000.html";

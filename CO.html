@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thawee Koon</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
@@ -321,18 +322,18 @@
 
 <body>
 
+    </div>
+
     <div class="top-bar">
-        <button class="back-btn" onclick="goBack()">← Back</button>
+        <button class="back-btn" onclick="goHome()">← Home</button>
         <h1>Thawee koon</h1>
-        <div style="width: 70px;"></div>
+        <div id="scoreDisplay" style="color:white; font-size:1.2em;">Score: 0</div>
     </div>
 
     <div class="overlay" id="overlay">
         <div class="stars" id="stars">⭐ ⭐ ⭐</div>
         <div class="message" id="messageText"></div>
-        <button class="try-again-btn" onclick="resetGame()">Try Again</button>
-        <button class="try-again-btn" id="nextLevelBtn" onclick="goToNextLevel()" style="display: none;">Next Level
-            →</button>
+        <button class="try-again-btn" id="homeBtn" onclick="goHome()">🏠 กลับหน้าแรก</button>
     </div>
 
     <div class="question-box" id="question">2 ^ 3 = ?</div>
@@ -354,44 +355,33 @@
     </div>
 
     <script>
+        const questions = [
+            { base: 2, exp: 1 },
+            { base: 3, exp: 2 },
+            { base: 2, exp: 5 },
+            { base: 4, exp: 2 },
+            { base: 5, exp: 2 },
+            { base: 6, exp: 2 },
+            { base: 2, exp: 6 },
+            { base: 3, exp: 3 },
+            { base: 7, exp: 2 },
+            { base: 2, exp: 8 },
+            { base: 4, exp: 3 },
+            { base: 8, exp: 2 },
+            { base: 5, exp: 3 },
+            { base: 9, exp: 2 },
+            { base: 10, exp: 2 }
+        ];
 
-        const level = parseInt(new URLSearchParams(window.location.search).get("level")) || 1;
-
-        const levelKey = "number003_unlockedLevels";
-        const prevKey = "number002_unlockedLevels";
-
-        if ((parseInt(localStorage.getItem(prevKey)) || 0) < 15) {
-            alert("กรุณาผ่านทุกด่านของบทที่ 2 ก่อน");
-            window.location.href = "number002.html";
-        }
-
-        function randomInt(min, max) {
-            return Math.floor(Math.random() * (max - min + 1)) + min;
-        }
-
-        function generateQuestion(level) {
-            let base, exponent;
-            if (level <= 5) {
-                base = randomInt(2, 3);
-                exponent = randomInt(1, 3);
-            } else if (level <= 10) {
-                base = randomInt(2, 5);
-                exponent = randomInt(3, 6);
-            } else {
-                base = randomInt(3, 7);
-                exponent = randomInt(5, 10);
-            }
-            return { base, exponent };
-        }
-
-        const questionData = generateQuestion(level);
-        const base = questionData.base;
-        const exponent = questionData.exponent;
-        const correctAnswer = Math.pow(base, exponent);
-
-        document.getElementById("question").textContent = `${base} ^ ${exponent} = ?`;
-
+        let score = 0;
         let userAnswer = "";
+        let currentQuestion, correctAnswer;
+
+        function randomQuestion() {
+            currentQuestion = questions[Math.floor(Math.random() * questions.length)];
+            correctAnswer = Math.pow(currentQuestion.base, currentQuestion.exp);
+            document.getElementById("question").textContent = `${currentQuestion.base} ^ ${currentQuestion.exp} = ?`;
+        }
 
         function addDigit(num) {
             userAnswer += num;
@@ -407,55 +397,30 @@
             const overlay = document.getElementById("overlay");
             const stars = document.getElementById("stars");
             const message = document.getElementById("messageText");
-            const nextLevelBtn = document.getElementById("nextLevelBtn");
+            const homeBtn = document.getElementById("homeBtn");
 
             if (parseInt(userAnswer, 10) === correctAnswer) {
-                message.textContent = "Correct! Well done!";
+                message.textContent = "Correct! +20 Points 🎉";
                 stars.style.display = "block";
-                nextLevelBtn.style.display = "inline-block";
-
-                const savedUnlocked = parseInt(localStorage.getItem(levelKey)) || 1;
-                if (level === savedUnlocked && level < 15) {
-                    localStorage.setItem(levelKey, level + 1);
-                }
-
-                if (level === 15) {
-
-                    const unlockedPage = parseInt(localStorage.getItem("unlockedPage")) || 2;
-                    if (unlockedPage < 4) {
-                        localStorage.setItem("unlockedPage", 4);
-                    }
-
-                    nextLevelBtn.textContent = "กลับหน้าหลัก";
-                    nextLevelBtn.onclick = () => window.location.href = "GS2.html";
-                } else {
-                    nextLevelBtn.textContent = "Next Level →";
-                    nextLevelBtn.onclick = goToNextLevel;
-                }
-
+                homeBtn.style.display = "none";
+                score += 20;
+                document.getElementById("scoreDisplay").textContent = "Score: " + score;
+                setTimeout(() => {
+                    overlay.style.display = "none";
+                    clearAnswer();
+                    randomQuestion();
+                }, 1500);
             } else {
-                message.textContent = "Incorrect! Try again.";
+                message.textContent = "Incorrect! ❌";
                 stars.style.display = "none";
-                nextLevelBtn.style.display = "none";
+                homeBtn.style.display = "inline-block";
             }
 
             overlay.style.display = "flex";
         }
 
-        function goToNextLevel() {
-            const nextLevel = level + 1;
-            window.location.href = `number003.html?level=${nextLevel}`;
-        }
-
-        function resetGame() {
-            userAnswer = "";
-            document.getElementById("answerDisplay").textContent = "Answer: ";
-            document.getElementById("overlay").style.display = "none";
-            document.getElementById("nextLevelBtn").style.display = "none";
-        }
-
-        function goBack() {
-            window.location.href = "number003.html";
+        function goHome() {
+            window.location.href = "home1.html";
         }
 
         function toggleMenu() {
@@ -470,26 +435,30 @@
             }
         });
 
-        if (level === 15) {
-            const unlockedPage = parseInt(localStorage.getItem("unlockedPage")) || 1;
-            if (unlockedPage < 4) {
-                localStorage.setItem("unlockedPage", 4);
-            }
-
-            const ch1 = parseInt(localStorage.getItem("number000_unlockedLevels")) || 0;
-            const ch2 = parseInt(localStorage.getItem("number001_unlockedLevels")) || 0;
-            const ch3 = parseInt(localStorage.getItem("number002_unlockedLevels")) || 0;
-
-            if (ch1 >= 15 && ch2 >= 15 && ch3 >= 15) {
-                nextLevelBtn.textContent = "🌸 ไปยังหน้าขอบคุณ";
-                nextLevelBtn.onclick = () => window.location.href = "THU.html";
-            } else {
-                nextLevelBtn.textContent = "กลับหน้าหลัก";
-                nextLevelBtn.onclick = () => window.location.href = "GS2.html";
-            }
+        let lastIndex = -1;
+        function randomQuestion() {
+            let index;
+            do {
+                index = Math.floor(Math.random() * questions.length);
+            } while (index === lastIndex);
+            lastIndex = index;
+            currentQuestion = questions[index];
+            correctAnswer = Math.pow(currentQuestion.base, currentQuestion.exp);
+            document.getElementById("question").textContent = `${currentQuestion.base} ^ ${currentQuestion.exp} = ?`;
         }
 
+        const homeBtn = document.getElementById("homeBtn");
+        if (homeBtn) {
+            homeBtn.style.display = "inline-block";
+        }
 
+        function goHome() {
+            localStorage.setItem("currentScore", score);  // บันทึกคะแนนไว้
+            window.location.href = "home1.html";          // กลับหน้าแรก
+        }
+
+        // เริ่มเกม
+        randomQuestion();
     </script>
 </body>
 

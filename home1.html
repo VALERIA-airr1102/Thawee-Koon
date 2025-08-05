@@ -242,8 +242,9 @@
     <h2>คะแนนล่าสุด:</h2>
     <script>
         const lastScore = localStorage.getItem("currentScore");
-        if (lastScore !== null) {
-            document.write(`<p style="font-size: 2em; margin-top: 0;">${lastScore} คะแนน</p>`);
+        const scoreDisplay = document.getElementById("scoreDisplay");
+        if (lastScore !== null && scoreDisplay) {
+            scoreDisplay.textContent = `คะแนนล่าสุดของคุณ: ${lastScore} คะแนน`;
         }
     </script>
 
@@ -253,7 +254,7 @@
         <nav class="menu">
             <a href="GS2.html">Single Player</a>
             <a href="FS.html">Fast⏩</a>
-            <a href="in.html">Collect Points</a>
+            <a href="CO.html">Collect Points</a>
             <a href="552.html">Player Ranking🥇🥈🥉</a>
             <a href="CA.html">Creator Credit💻</a>
             <a href="index.html">Log Out</a>
