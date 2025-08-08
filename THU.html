@@ -3,34 +3,37 @@
 
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ขอบคุณที่เล่น!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thawee koon</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             margin: 0;
-            padding: 0;
+            padding: 20px;
             background: radial-gradient(ellipse at center, #ffe0f0, #ffb6c1);
             font-family: 'Kanit', sans-serif;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
-            height: 100vh;
-
+            min-height: 100vh;
+            flex-direction: column;
         }
 
         .container {
-            margin-top: 40px;
             background: rgba(255, 255, 255, 0.6);
             padding: 40px 30px;
             border-radius: 20px;
             max-width: 800px;
+            width: 100%;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             backdrop-filter: blur(10px);
             animation: fadeIn 1s ease-out;
         }
-
 
         h1 {
             font-size: 2.5em;
@@ -47,6 +50,10 @@
         h2 {
             color: #d63384;
             margin-top: 30px;
+        }
+
+        .support-links {
+            margin-top: 20px;
         }
 
         .support-links a {
@@ -74,8 +81,7 @@
             border-radius: 12px;
             font-size: 1.2em;
             cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2),
-                0 0 10px #ff69b4;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2), 0 0 10px #ff69b4;
             animation: pulse 2s infinite;
             transition: all 0.3s ease;
         }
@@ -145,7 +151,23 @@
                 box-shadow: 0 0 10px #ff69b4;
             }
         }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .btn {
+                font-size: 1em;
+                padding: 12px 24px;
+            }
+
+            .container {
+                padding: 30px 20px;
+            }
+        }
     </style>
+
 </head>
 
 <body>
@@ -158,15 +180,28 @@
 
         <p>เกมนี้ถูกสร้างขึ้นเพื่อเป็นชิ้นงานนำเสนอ<br>คุณครูนภาพร จันทวี</p>
 
-        <h2>🌟 ทีมผู้สร้าง</h2>
-        <p>นางสาว สุวรรณนภา ชัยแสวง No.29</p>
-        <p>นางสาว ปาลิตา หมื่นพิลมทอง No.XX</p>
-        <p>นางสาว พุทธิตา ศรีจันทร์ No.XX</p>
-        <p>นาย สายหมอก สร้อยสาวะ No.XX</p>
+        <h2>คำขอบคุณจาก Lin💜</h2>
+        <p>ขอบคุณที่เป็นภาระให้ในวันที่ยิ้มได้</p>
 
-        <h2>📣 ช่องทางสนับสนุน</h2>
+        <h2>คำขอบคุณจาก Miremi Ivy</h2>
+        <p>ขอบคุณที่เล่นจนจบนะคะ ถ้าเล่นไม่จบคงไม่ได้อ่าน</p>
+
+        <h2>คำขอบคุณจาก Valeria🐇💗</h2>
+        <p>ขอบคุณที่เล่นเกมนี้จนจบนะคะ
+            จากใจผู้สร้างดีใจมากๆเลยค่ะที่สามารถสร้างเกมนี้ได้ออกมาเป็นชิ้นงานจริงๆให้ทุกๆคนได้เข้ามาลองเล่น
+            สามารถติชมกันได้นะคะ ถ้าสนุกหรือชื่นขอบก็สามารถสนับสนุนที่ช่องทางด่านล่างได้เลยค่ะ </p>
+
+        <h2>คำขอบคุณจาก เดือน</h2>
+        <p>ขอบคุณมากไอตูดหมึก</p>
+
+        <h2>🌟 ทีมผู้สร้างจาก M.5/1</h2>
+        <p>นางสาว สุวรรณนภา ชัยแสวง No.29</p>
+        <p>นางสาว ปาลิตา หมื่นพิลมทอง No.12</p>
+        <p>นางสาว พุทธิตา ศรีจันทร์ No.17</p>
+        <p>นาย สายหมอก สร้อยสาวะ No.3</p>
+
+        <h2>📣 ช่องทางสนับสนุน ของValeria</h2>
         <div class="support-links">
-            <a href="https://discord.gg/6x9swQMc" target="_blank">Discord</a>
             <a href="https://www.facebook.com/share/1CXAV4sDPx/" target="_blank">Facebook</a>
             <a href="https://line.me/ti/p/Eo3cJtIyQf" target="_blank">Line</a>
             <a href="https://www.instagram.com/valeria_airr" target="_blank">Instagram</a>
@@ -191,6 +226,12 @@
         }
 
         setInterval(createSparkle, 150);
+
+        if ((parseInt(localStorage.getItem("number003_unlockedLevels")) || 0) < 15) {
+            alert("คุณยังเล่นไม่ถึงหน้านี้!");
+            window.location.href = "number000.html";
+        }
+
     </script>
 </body>
 
